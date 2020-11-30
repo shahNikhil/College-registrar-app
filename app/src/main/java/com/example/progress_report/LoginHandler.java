@@ -17,22 +17,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class StudentPanelActivity extends AppCompatActivity {
+public class LoginHandler extends AppCompatActivity {
 
     String userEmail = "";
     // Write a message to the database
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    DatabaseReference instRef = database.getReference("instructor");
-    DatabaseReference stuRef = database.getReference("stu");
-    DatabaseReference devRef = database.getReference("dev");
+    DatabaseReference instRef = database.getReference("isInstructor");
+    DatabaseReference stuRef = database.getReference("isStudent");
+    DatabaseReference devRef = database.getReference("isDeveloper");
 
     Intent i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_panel);
+        setContentView(R.layout.activity_login_handler);
 
         //Google sign
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
@@ -45,6 +45,7 @@ public class StudentPanelActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String value = snapshot.getValue(String.class);
+                Toast.makeText(LoginHandler.this, value, Toast.LENGTH_SHORT).show();
                 if (userEmail.equals(value)) {
                     i = new Intent(getApplicationContext(), InstructorActivity.class);
                     startActivity(i);
@@ -76,6 +77,7 @@ public class StudentPanelActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String value = snapshot.getValue(String.class);
+                Toast.makeText(LoginHandler.this, value, Toast.LENGTH_SHORT).show();
                 if (userEmail.equals(value)) {
                     i = new Intent(getApplicationContext(), StudentActivity.class);
                     startActivity(i);
@@ -107,6 +109,7 @@ public class StudentPanelActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String value = snapshot.getValue(String.class);
+                Toast.makeText(LoginHandler.this, value, Toast.LENGTH_SHORT).show();
                 if (userEmail.equals(value)) {
                     i = new Intent(getApplicationContext(), DeveloperActivity.class);
                     startActivity(i);

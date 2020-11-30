@@ -24,7 +24,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
 
 public class LoginActivity extends AppCompatActivity {
     //Declaring the FirebaseAuth for google sign in
@@ -62,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
-            Intent intent = new Intent(getApplicationContext(), StudentPanelActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LoginHandler.class);
             startActivity(intent);
         }
     }
@@ -116,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(), StudentPanelActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), LoginHandler.class);
                             startActivity(intent);
 
                         } else {

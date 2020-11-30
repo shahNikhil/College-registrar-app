@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DeveloperActivity"></activity>
+        <activity android:name=".DeveloperActivity" />
         <activity android:name=".StudentActivity" />
         <activity android:name=".InstructorActivity" />
-        <activity android:name=".StudentPanelActivity" />
+        <activity android:name=".LoginHandler" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
