@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     //Declaring the FirebaseAuth for google sign in
@@ -42,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         //login data handlers
         signInButton = findViewById(R.id.signin);
         Button loginButton = findViewById(R.id.loginButton);
-        EditText userMail = findViewById(R.id.userMail);
-        EditText userPassword = findViewById(R.id.userPassword);
+        final EditText userID = findViewById(R.id.studentId);
+        final EditText userPassword = findViewById(R.id.studentPassword);
         firebaseAuth = FirebaseAuth.getInstance();
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -53,6 +59,97 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(this, gso);
         signInButton.setOnClickListener(handleGoogleLogin);
 
+
+        //on click of a local login here
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                String user_ID = userID.getText() + "";
+                final String pass = userPassword.getText() + "";
+
+
+                //Code for checking student authentication
+                final DatabaseReference stuRef = database.getReference("student").child(user_ID);
+                ValueEventListener eventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                        }else{
+                           String verifyPass =  ""+dataSnapshot.child("pass").getValue();
+                           if(pass.equals(verifyPass)){
+                               Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                               Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+                               startActivity(intent);
+                           }else {
+                           }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("TAG", databaseError.getMessage()); //Don't ignore errors!
+                    }
+                };
+                stuRef.addListenerForSingleValueEvent(eventListener);
+
+
+
+
+                //Code for checking Instructor authentication
+                final DatabaseReference insRef = database.getReference("instructor").child(user_ID);
+                ValueEventListener instructorEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                        }else{
+                            String verifyPass =  ""+dataSnapshot.child("pass").getValue();
+                            if(pass.equals(verifyPass)){
+                                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), InstructorActivity.class);
+                                startActivity(intent);
+                            }else {
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("TAG", databaseError.getMessage()); //Don't ignore errors!
+                    }
+                };
+                insRef.addListenerForSingleValueEvent(instructorEventListener);
+
+
+
+                //Code for checking Developer authentication
+                DatabaseReference devRef = database.getReference("developer");
+                ValueEventListener devEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                        }else{
+                            String verifyPass =  ""+dataSnapshot.child("pass").getValue();
+                            if(pass.equals(verifyPass)){
+                                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), DeveloperActivity.class);
+                                startActivity(intent);
+                            }else {
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("TAG", databaseError.getMessage()); //Don't ignore errors!
+                    }
+                };
+                devRef.addListenerForSingleValueEvent(devEventListener);
+
+
+            }
+        });
     }
 
     @Override

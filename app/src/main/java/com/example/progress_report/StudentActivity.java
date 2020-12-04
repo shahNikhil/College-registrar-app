@@ -29,6 +29,9 @@ public class StudentActivity extends AppCompatActivity {
                     firebaseAuth.signOut();
                     Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(i);
+                }else{
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
                 }
             }
         });

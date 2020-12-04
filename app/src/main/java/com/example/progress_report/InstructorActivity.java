@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class InstructorActivity extends AppCompatActivity {
 
@@ -22,11 +23,15 @@ public class InstructorActivity extends AppCompatActivity {
         logout = findViewById(R.id.logoutButton);
         firebaseAuth = FirebaseAuth.getInstance();
         logout.setOnClickListener(new View.OnClickListener() {
+            String userEmail = firebaseAuth.getCurrentUser().getEmail();
             @Override
             public void onClick(View v) {
                 FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                 if (currentUser != null) {
                     firebaseAuth.signOut();
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }else{
                     Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(i);
                 }
