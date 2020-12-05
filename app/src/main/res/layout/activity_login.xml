@@ -36,7 +36,7 @@
         android:layout_marginVertical="40dp"
         android:background="@color/colorPrimaryDark"
         android:ems="10"
-        android:hint="Your Student ID"
+        android:hint="Your  ID"
         android:inputType="textPersonName"
         android:padding="8dp"
         android:textColor="@color/colorWhite"

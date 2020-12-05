@@ -52,12 +52,12 @@ public class LoginActivity extends AppCompatActivity {
         final EditText userPassword = findViewById(R.id.studentPassword);
         firebaseAuth = FirebaseAuth.getInstance();
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
-        signInButton.setOnClickListener(handleGoogleLogin);
+        signInButton.setOnClickListener(handleGoogleLogin);*/
 
 
         //on click of a local login here
@@ -66,21 +66,36 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                String user_ID = userID.getText() + "";
+                final String user_ID = userID.getText() + "";
                 final String pass = userPassword.getText() + "";
 
 
+
                 //Code for checking student authentication
-                final DatabaseReference stuRef = database.getReference("student").child(user_ID);
+               final  DatabaseReference stuRef = database.getReference("student").
+                        child(user_ID);
+             //  final  DatabaseReference courRef = database.getReference("student").child(user_ID).child("course");
+
+
+
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (!dataSnapshot.exists()) {
                         }else{
-                           String verifyPass =  ""+dataSnapshot.child("pass").getValue();
+                            String verifyPass =  ""+dataSnapshot.child("pass").getValue();
+                           String name=""+dataSnapshot.child("name").getValue();
+                           String email=""+dataSnapshot.child("email").getValue();
+                           String courses=""+dataSnapshot.child("course").getValue();
                            if(pass.equals(verifyPass)){
                                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
                                Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+
+                               intent.putExtra("Id",user_ID);
+                               intent.putExtra("name",name);
+                               intent.putExtra("email",email);
+                               intent.putExtra("course",courses);
+
                                startActivity(intent);
                            }else {
                            }
@@ -105,11 +120,17 @@ public class LoginActivity extends AppCompatActivity {
                         if (!dataSnapshot.exists()) {
                         }else{
                             String verifyPass =  ""+dataSnapshot.child("pass").getValue();
+                            String email=""+dataSnapshot.child("email").getValue();
+                            String courses=""+dataSnapshot.child("course").getValue();
+
                             if(pass.equals(verifyPass)){
                                 Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), InstructorActivity.class);
+                                intent.putExtra("email",email);
+                                intent.putExtra("course",courses);
                                 startActivity(intent);
                             }else {
+                                Toast.makeText(LoginActivity.this, "Password invalid", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

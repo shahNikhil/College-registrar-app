@@ -24,11 +24,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
-        android:text="Student Id: " />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:textColor="@color/colorWhite" />
         <TextView
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
@@ -75,4 +76,11 @@
             android:layout_height="wrap_content"
             android:text="Submit"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView_cdata"
+        android:layout_width="match_parent"
+        android:layout_height="157dp"
+        android:textSize="18sp" />
+
 </LinearLayout>
